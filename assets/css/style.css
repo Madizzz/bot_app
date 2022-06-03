@@ -1,0 +1,285 @@
+.chatBox{
+  display: none;
+  width: 480px;
+  height: 350px;
+  overflow: visible;
+  position: fixed;
+  bottom: 20px;
+  right: 15px;
+  opacity: .99;
+  z-index: 9999;
+  border-radius: 5px;
+  box-shadow: 0 0 3px #aaaaaa;
+  background-color: #fff;
+  font-size: 13px;
+  color: #13152D;
+}
+
+.chatBox.active{
+display: block;
+}
+
+.chatBox.active1{
+  display: block;
+  }
+
+.chatBox #close{
+  position: absolute;
+  z-index: 401;
+  top: 4px;
+  right: 4px;
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: url("https://beeline.kz/binaries/content/assets/chat-bot/images/sprite.png?2021040915") -23px 0 no-repeat white;
+}
+
+#chat-open-button.beeline{
+  text-align: center;
+    font-size: 12px;
+    border: 0 solid transparent;
+    display: block;
+    box-sizing: border-box;
+    width: 200px;
+    height: 32px;
+    background-color: #000000;
+    bottom: 80px;
+    margin-bottom: 100px;
+    font-size: 13px;
+    font-weight: 700;
+    padding-top: 9px;
+    right: -85px;
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+}
+
+#chat-open-button.beeline.active {
+  display: none;
+}
+
+#chat-open-button.beeline {
+  position: fixed;
+  display: block;
+  background-color: #000000;
+  text-align: center;
+  font-size: 15px;
+  color: #4f4f4f;
+  /* font-size: 13px; */
+  font-weight: 700;
+  width: 200px;
+  height: 32px;
+  bottom: 80px;
+  margin-bottom: 100px;
+  font-size: 13px;
+  font-weight: 700;
+  padding-top: 9px;
+  right: -85px;
+  color: #fff;
+  text-decoration: none;
+  z-index: 99999;
+  cursor: pointer;
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
+.chatBox.intro .chat-box-intro-links {
+  left: 15px;
+  top: 17px;
+  width: 322px;
+}
+
+.chatBox .chat-box-intro-links {
+  position: absolute;
+  top: 10px;
+  left: 24px;
+  padding: 1px;
+  z-index: 3;
+  font-size: 14px !important;
+  line-height: 14px;
+}
+
+.chatBox.intro .chat-box-intro-links h3 {
+  display: block;
+  font-size: 24px;
+  margin: 0;
+  font-weight: bold;
+}
+
+.chatBox .chat-box-intro-links h3 {
+  display: none;
+}
+
+.chatBox.intro .chat-box-intro-links .int-text {
+  display: inline-block;
+  max-width: 235px;
+}
+
+.chatBox .chat-box-intro-links .int-text {
+  display: none;
+}
+
+.chatBox .chat-box-intro-links p {
+  font-size: 14px;
+  margin-bottom: 0px;
+  line-height: 16px;
+}
+
+.chatBox .chat-box-intro-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.chatBox.intro .chat-box-intro-links ul li {
+  float: none;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.msisdnField {
+  margin-bottom: 7px;
+  margin-top: 15px;
+}
+
+.chatbot-input-field {
+  width: 100%;
+  font-size: 14px;
+  height: 40px;
+  padding: 2px 10px !important;
+  border: 1px solid silver !important;
+  border-radius: 3px !important;
+}
+
+.chatBox .chat-bot-error-text {
+  color: red;
+}
+
+.chatBox .chat-bot-small-text {
+  display: block;
+  font-size: 11px;
+  margin-bottom: 5px;
+}
+
+.chatBox .chat-box-intro-links ul li .continue-without-auth {
+  margin-top: 15px;
+  margin-bottom: 18px;
+}
+
+.chatBox .chat-box-intro-links ul li {
+  display: block;
+  margin-bottom: 1px;
+  border: none;
+  font-size: 14px !important;
+  line-height: 14px;
+}
+
+.chatBox.intro .chat-box-intro-links ul li.bot-links a {
+  display: inline-block;
+  background-color: #EBF0F3;
+  border-radius: 9px;
+  color: black;
+  margin-bottom: 6px;
+}
+
+.chatBox .chat-box-intro-links a {
+    width: 60%;
+  font-size: 14px !important;
+  line-height: 14px;
+  border: none;
+  text-decoration: none;
+  position: relative;
+}
+
+.chatBox.intro .chat-box-intro-links ul li.bot-links a i {
+  position: absolute;
+}
+
+.chatBox .chat-box-intro-links a i.whatsapp-bot-link {
+  background-image: url("https://beeline.kz/binaries/content/assets/chat-bot/images/whatsapp.png");
+  border-radius: 7px;
+}
+
+.chatBox .chat-box-intro-links a i {
+  display: inline-block;
+  width: 21px;
+  height: 21px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  margin-right: 5px;
+  top: 0;
+  left: 0;
+}
+
+.chatBox.intro .chat-box-intro-links ul li.bot-links a i {
+  position: absolute;
+}
+
+.chatBox .chat-box-intro-links a i.telegram-bot-link {
+  background-image: url("https://beeline.kz/binaries/content/assets/chat-bot/images/telegram.png");
+}
+
+.chatBox .chat-box-intro-links a i {
+  display: inline-block;
+  width: 21px;
+  height: 21px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  margin-right: 5px;
+  top: 0;
+  left: 0;
+}
+
+.chatBox .chat-box-intro-links a span {
+  display: inline-block;
+  vertical-align: super;
+  margin-left: 30px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+.chatbot-btn {
+  display: block;
+  width: 100%;
+  font-size: 13px !important;
+  padding: 16px 11px !important;
+  line-height: 0 !important;
+  height: 26px !important;
+  color: #282828;
+  border-radius: 0;
+  text-shadow: none;
+  box-shadow: none;
+  border: 1px solid #FFD400;
+  border-top-width: 0;
+  border-radius: 3px;
+  cursor: pointer;
+  position: relative;
+  text-align: center;
+  white-space: nowrap;
+  background: #FFD400;
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.chatBox.intro .character-block {
+  right: 0 !important;
+  bottom: 0;
+  left: unset !important;
+}
+
+.chatBox .character-block {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 250px;
+  height: 312px;
+  background: 0 0;
+}

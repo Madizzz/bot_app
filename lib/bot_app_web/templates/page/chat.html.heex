@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Chatbot on pure JavaScript</title>
+  <%# <style src="https://beeline.kz/binaries/content/assets/chat-bot/css/chat.min.css?20210827-119"></style> %>
+</head>
+
+ <body>
+<%# <script defer phx-track-static type="text/javascript" src="https://beeline.kz/binaries/content/assets/chat-bot/chat-min.js?20211214"></script>
+<script defer type="text/javascript"> $(function(){ Chat.init({ brand: 'beeline', lang: 'ru', botName: 'BOT' }); }); </script>  %>
+<%# <div id="chat-open-button" class="beeline" style="display: block;">			<div class="chat-consultant">Виртуальный консультант</div>		</div>
+<div class="chatBox intro" style="display: none;">                <div class="ui-icon ui-icon-closethick" id="close"></div>                <div id="chatUserPanel"><i></i> <span class="chat-user-number"></span> <a href="#" title="Выход"></a></div>                <div class="chat-box-intro-links">                <h3>Виртуальный консультант</h3>                 <p class="int-text">Получите персонализированные ответы на свои вопросы на сайте или в мессенджере</p>                 <ul>                    <li class="chat-auth-block int-text">                        <input id="msisdn" class="chatbot-input-field msisdnField" placeholder="Номер телефона или логин" autocomplete="off"><br>                        <div class="code-block" style="display:none">                            <input id="msisdnPass" class="chatbot-input-field msisdnPass" type="password" placeholder="Введите код" autocomplete="off">                             <span class="chat-bot-small-text">На Ваш номер отправлен СМС с кодом</span>                        </div>                        <div id="accountErrorMsg" class="chat-bot-small-text chat-bot-error-text"></div>                        <div class="account-confirm-block" style="display:none">                            <div id="accountInfo"></div>                            <span>Подтверждаете?</span>                            <div class="auth-confirm-buttons">                                 <input type="button" value="Да" onclick="Chat.authorizeWithLoginConfirmed()" class="chatbot-btn">                                <input type="button" value="Нет" onclick="Chat.showIntroPage()" class="chatbot-btn chatbot-btn-default">                            </div>                         </div>                        <div class="auth-send-buttons"><input type="button" value="Отправить" onclick="Chat.loginSubmit()" class="chatbot-btn"></div>                         <div class="int-text continue-without-auth">Продолжить <a href="#" class="start-dialog">без авторизации</a><div>                    </div></div></li>                    <li class="bot-links">                    <a href="https://t.me/BeelineDanaBot" target="_blank" class="telegram-link" title="Написать в телеграм"><i class="telegram-bot-link"></i> <span class="int-text">Написать в телеграм</span></a>                    <a href="https://wa.me/77713330055" target="_blank" title="Написать в whatsapp"><i class="whatsapp-bot-link"></i> <span class="int-text">Написать в whatsapp</span></a>                    <!--a href="https://www.facebook.com/Beeline.Kazakhstan/app/190322544333196/?ref=page_internal" target="_blank" title="Написать в facebook"><i class="facebook-bot-link"></i> <span class="int-text">Написать в facebook</span></a-->                    </li>                 </ul>                </div>                <div class="character-block"><img class="character-img" src="/binaries/content/assets/chat-bot/images/dana/anim_0.gif?v=20210827-119">			</div>                <div class="dialog-block">                    <div class="messages-block">                        <div class="nano has-scrollbar">                            <div class="messageBox nano-content" tabindex="0" style="right: 0px;"></div>                        <div class="nano-pane" style="opacity: 1; visibility: visible; display: none;"><div class="nano-slider" style="height: 20px; transform: translate(0px, 0px);"></div></div></div>                    </div>                    <div class="request-form">                        <ul id="chatPredictList" class="chat-prediction-block" style="display:none"></ul>                        <input name="input-message" id="input-message" type="text" placeholder="Введите Ваш вопрос" maxlength="100" disabled="">                        <input type="button" class="send-button" value=" ">                    </div>                </div>            </div>
+
+<script defer>
+   $("#chat-open-button, #close").click(function(){
+      if ($(".chatBox")[0].style.display == "none") {
+      $(".chatBox")[0].style.display = "block"
+      $("#chat-open-button")[0].style.display = "none"
+      } else {
+      $("#chat-open-button")[0].style.display = "block"
+      $(".chatBox")[0].style.display = "none"
+      }
+   })
+   $(".chatBox")[0].style.display = "none"
+</script> %>
+
+  <div id="chat-open-button" class="beeline" style>
+    <div class="chat-consultant">Виртуальный консультант</div>
+  </div>
+
+  <div class="chatBox intro" id="chatBox">
+   <div class="ui-icon ui-icon-closethick" id="close"></div>
+   <div class="chat-box-intro-links">
+      <h3>Виртуальный консультант</h3>
+      <p class="int-text">Получите персонализированные ответы на свои вопросы на сайте или в мессенджере</p>
+      <ul>
+         <li class="chat-auth-block int-text">
+            <input id="msisdn" class="chatbot-input-field msisdnField" placeholder="Номер телефона или логин" autocomplete="off"><br>
+            <div class="code-block" style="display:none">
+               <input id="msisdnPass" class="chatbot-input-field msisdnPass" type="password" placeholder="Введите код" autocomplete="off">
+               <span class="chat-bot-small-text">На Ваш номер отправлен СМС с кодом</span>
+            </div>
+            <div id="accountErrorMsg" class="chat-bot-small-text chat-bot-error-text"></div>
+            <div class="account-confirm-block" style="display:none">
+               <div id="accountInfo"></div>
+               <span>Подтверждаете?</span>
+               <div class="auth-confirm-buttons">
+                  <input type="button" value="Да" onclick="Chat.authorizeWithLoginConfirmed()" class="chatbot-btn">
+                  <input type="button" value="Нет" onclick="Chat.showIntroPage()" class="chatbot-btn chatbot-btn-default">
+               </div>
+            </div>
+            <div class="auth-send-buttons"><input type="button" value="Отправить" onclick="Chat.loginSubmit()" class="chatbot-btn"></div>
+            <div class="int-text continue-without-auth">
+               Продолжить <a href="#" class="start-dialog">без авторизации</a>
+               <div>
+               </div>
+            </div>
+         </li>
+         <li class="bot-links">
+            <a href="://t.me/BeelineDanaBot" target="_blank" class="telegram-link" title="Написать в телеграм"><i class="telegram-bot-link"></i> <span class="int-text">Написать в телеграм</span></a>
+            <a href="https://wa.me/77713330055" target="_blank" title="Написать в whatsapp"><i class="whatsapp-bot-link"></i>
+            <span class="int-text">Написать в whatsapp</span></a>
+            <!--a href="https://www.facebook.com/Beeline.Kazakhstan/app/190322544333196/?ref=page_internal"
+               target="_blank" title="Написать в facebook"><i class="facebook-bot-link"></i> <span class="int-text">Написать в facebook</span></a-->
+         </li>
+      </ul>
+   </div>
+   <div class="character-block">
+      <img class="character-img" src="https://beeline.kz/binaries/content/assets/chat-bot/images/dana/anim_0.gif?v=20210827-119">
+   </div>
+  </div>
+
+  <div class="chatBox">
+   <div class="ui-icon ui-icon-closethick" id="close"></div>
+   <div id="chatUserPanel"><i></i> <span class="chat-user-number"></span> <a href="#" title="Выход"></a></div>
+   <div class="chat-box-intro-links">
+      <h3>Виртуальный консультант</h3>
+      <p class="int-text">Получите персонализированные ответы на свои вопросы на сайте или в мессенджере</p>
+      <ul>
+         <li class="chat-auth-block int-text">
+            <input id="msisdn" class="chatbot-input-field msisdnField" placeholder="Номер телефона или логин" autocomplete="off"><br>
+            <div class="code-block" style="display:none">                            <input id="msisdnPass" class="chatbot-input-field msisdnPass" type="password" placeholder="Введите код" autocomplete="off">                             <span class="chat-bot-small-text">На Ваш номер отправлен СМС с кодом</span>                        </div>
+            <div id="accountErrorMsg" class="chat-bot-small-text chat-bot-error-text"></div>
+            <div class="account-confirm-block" style="display:none">
+               <div id="accountInfo"></div>
+               <span>Подтверждаете?</span>
+               <div class="auth-confirm-buttons">                                 <input type="button" value="Да" onclick="Chat.authorizeWithLoginConfirmed()" class="chatbot-btn">                                <input type="button" value="Нет" onclick="Chat.showIntroPage()" class="chatbot-btn chatbot-btn-default">                            </div>
+            </div>
+            <div class="auth-send-buttons"><input type="button" value="Отправить" onclick="Chat.loginSubmit()" class="chatbot-btn"></div>
+            <div class="int-text continue-without-auth">
+               Продолжить <a href="#" class="start-dialog">без авторизации</a>
+               <div>                    </div>
+            </div>
+         </li>
+         <li class="bot-links">
+            <a href="https://t.me/BeelineDanaBot" target="_blank" class="telegram-link" title="Написать в телеграм"><i class="telegram-bot-link"></i> <span class="int-text">Написать в телеграм</span></a>                    <a href="https://wa.me/77713330055" target="_blank" title="Написать в whatsapp"><i class="whatsapp-bot-link"></i> <span class="int-text">Написать в whatsapp</span></a>                    <!--a href="https://www.facebook.com/Beeline.Kazakhstan/app/190322544333196/?ref=page_internal" target="_blank" title="Написать в facebook"><i class="facebook-bot-link"></i> <span class="int-text">Написать в facebook</span></a-->
+         </li>
+      </ul>
+   </div>
+   <div class="character-block"><img class="character-img" src="/binaries/content/assets/chat-bot/images/dana/anim_0.gif?v=20210827-119">			</div>
+   <div class="dialog-block">
+      <div class="messages-block">
+         <div class="nano has-scrollbar">
+            <div class="messageBox nano-content" tabindex="0" style="right: 0px;">
+               <div class="answerBubble">
+                  <div class="message">
+                     <p>Доброе утро!<br>
+                        <br>
+                        Меня зовут Дана, я Ваш виртуальный консультант🙂
+                     </p>
+                     <p><br>
+                        Обратите внимание: продолжая диалог, Вы даёте согласие на сбор и обработку своих персональных данных. Мы собираем информацию законно и не передаём её посторонним.<br>
+                        <br>
+                        А теперь выберите из подсказок.&nbsp;
+                     </p>
+                     <p>Если интересующей Вас&nbsp;информации нет в списке, напишите&nbsp;свой&nbsp;вопрос.</p>
+                     <ul class="chat-response-options">
+                        <li class="userlink" sch-id="5ed759f8d860da0a445d2a3f" step-id="4" btn-id="7" onclick="Chat.buttonClick(this)">Вопросы по мобильной связи</li>
+                        <li class="userlink" sch-id="5ed759f8d860da0a445d2a3f" step-id="4" btn-id="10" onclick="Chat.buttonClick(this)">Вопросы по услуге "Интернет дома"</li>
+                        <li class="userlink" sch-id="5ed759f8d860da0a445d2a3f" step-id="4" btn-id="35" onclick="Chat.buttonClick(this)">Для корпоративных клиентов</li>
+                        <li class="userlink" sch-id="5ed759f8d860da0a445d2a3f" step-id="4" btn-id="11" onclick="Chat.buttonClick(this)">Приложение Мой Beeline</li>
+                        <li class="userlink"><a href="https://bee.gg/e/Ff1OTvU1anb" sch-id="5ed759f8d860da0a445d2a3f" step-id="4" btn-id="24" target="_blank">🔥 Купить смартфон мечты 🔥</a></li>
+                        <li class="userlink" sch-id="5ed759f8d860da0a445d2a3f" step-id="4" btn-id="44" onclick="Chat.buttonClick(this)">Открой цифровой кошелёк Simply!</li>
+                        <li class="userlink" sch-id="5ed759f8d860da0a445d2a3f" step-id="4" btn-id="45" onclick="Chat.buttonClick(this)">Бронирование очереди (только г.Алматы ул. Жибек жолы, 98)</li>
+                     </ul>
+                  </div>
+               </div>
+               <div class="userBubble">
+                  <div class="message">Вопросы по мобильной связи</div>
+               </div>
+               <div class="answerBubble">
+                  <div class="message">
+                     <p>Что Вас интересует по мобильной связи?</p>
+                     <ul class="chat-response-options">
+                        <li class="userlink" sch-id="5ffb5b6a1e30e9ed0a4175fc" step-id="4" btn-id="14" onclick="Chat.buttonClick(this)">Мой тариф</li>
+                        <li class="userlink" sch-id="5ffb5b6a1e30e9ed0a4175fc" step-id="4" btn-id="23" onclick="Chat.buttonClick(this)">Мой баланс</li>
+                        <li class="userlink" sch-id="5ffb5b6a1e30e9ed0a4175fc" step-id="4" btn-id="24" onclick="Chat.buttonClick(this)">Детализация</li>
+                        <li class="userlink" sch-id="5ffb5b6a1e30e9ed0a4175fc" step-id="4" btn-id="13" onclick="Chat.buttonClick(this)">Все тарифы для подключения</li>
+                        <li class="userlink" sch-id="5ffb5b6a1e30e9ed0a4175fc" step-id="4" btn-id="18" onclick="Chat.buttonClick(this)">Переподключение тарифа</li>
+                        <li class="userlink" sch-id="5ffb5b6a1e30e9ed0a4175fc" step-id="4" btn-id="15" onclick="Chat.buttonClick(this)">Услуги</li>
+                        <li class="userlink" sch-id="5ffb5b6a1e30e9ed0a4175fc" step-id="4" btn-id="12" onclick="Chat.buttonClick(this)">Спецпредложения для Вас</li>
+                        <li class="userlink" sch-id="5ffb5b6a1e30e9ed0a4175fc" step-id="4" btn-id="29" onclick="Chat.buttonClick(this)">Полезные команды</li>
+                        <li class="userlink" sch-id="5ffb5b6a1e30e9ed0a4175fc" step-id="4" btn-id="28" onclick="Chat.buttonClick(this)">Как не стать жертвой мошенников</li>
+                        <li class="userlink" sch-id="5ffb5b6a1e30e9ed0a4175fc" step-id="4" btn-id="31" onclick="Chat.buttonClick(this)">Бронирование очереди (только г.Алматы ул. Жибек жолы, 98)</li>
+                     </ul>
+                  </div>
+               </div>
+               <div class="userBubble">
+                  <div class="message">Вопросы по мобильной связи</div>
+               </div>
+               <div class="answerBubble">
+                  <div class="message">
+                     <p>Что Вас интересует по мобильной связи?</p>
+                     <ul class="chat-response-options">
+                        <li class="userlink" sch-id="5ffb5b6a1e30e9ed0a4175fc" step-id="4" btn-id="14" onclick="Chat.buttonClick(this)">Мой тариф</li>
+                        <li class="userlink" sch-id="5ffb5b6a1e30e9ed0a4175fc" step-id="4" btn-id="23" onclick="Chat.buttonClick(this)">Мой баланс</li>
+                        <li class="userlink" sch-id="5ffb5b6a1e30e9ed0a4175fc" step-id="4" btn-id="24" onclick="Chat.buttonClick(this)">Детализация</li>
+                        <li class="userlink" sch-id="5ffb5b6a1e30e9ed0a4175fc" step-id="4" btn-id="13" onclick="Chat.buttonClick(this)">Все тарифы для подключения</li>
+                        <li class="userlink" sch-id="5ffb5b6a1e30e9ed0a4175fc" step-id="4" btn-id="18" onclick="Chat.buttonClick(this)">Переподключение тарифа</li>
+                        <li class="userlink" sch-id="5ffb5b6a1e30e9ed0a4175fc" step-id="4" btn-id="15" onclick="Chat.buttonClick(this)">Услуги</li>
+                        <li class="userlink" sch-id="5ffb5b6a1e30e9ed0a4175fc" step-id="4" btn-id="12" onclick="Chat.buttonClick(this)">Спецпредложения для Вас</li>
+                        <li class="userlink" sch-id="5ffb5b6a1e30e9ed0a4175fc" step-id="4" btn-id="29" onclick="Chat.buttonClick(this)">Полезные команды</li>
+                        <li class="userlink" sch-id="5ffb5b6a1e30e9ed0a4175fc" step-id="4" btn-id="28" onclick="Chat.buttonClick(this)">Как не стать жертвой мошенников</li>
+                        <li class="userlink" sch-id="5ffb5b6a1e30e9ed0a4175fc" step-id="4" btn-id="31" onclick="Chat.buttonClick(this)">Бронирование очереди (только г.Алматы ул. Жибек жолы, 98)</li>
+                     </ul>
+                  </div>
+               </div>
+               <div class="userBubble">
+                  <div class="message">Приложение Мой Beeline</div>
+               </div>
+               <div class="answerBubble">
+                  <div class="message">
+                     <p>Приложение «Мой Beeline» позволяет самостоятельно управлять услугами связи прямо с экрана телефона! Контроль расходов, детализация, тарифы, услуги и много полезной информации для каждого. Интернет-трафик при&nbsp;иcпользовании&nbsp;приложения&nbsp;бесплатный&nbsp;для всех клиентов Beeline Казахстан. Даже если Вы&nbsp;за границей&nbsp;😉&nbsp;<a href="https://bee.gg/e/0LWbclS2anb">Подробнее</a>.</p>
+                     <ul class="chat-response-options"></ul>
+                  </div>
+               </div>
+               <div class="answerBubble">
+                  <div class="message">
+                     <p>Нужна ли Вам еще моя помощь?</p>
+                     <ul class="chat-response-options">
+                        <li class="userlink" sch-id="5f6c7b67fca60e855d3ce316" step-id="11" btn-id="7" onclick="Chat.buttonClick(this)">Да</li>
+                        <li class="userlink" sch-id="5f6c7b67fca60e855d3ce316" step-id="11" btn-id="8" onclick="Chat.buttonClick(this)">Нет</li>
+                     </ul>
+                  </div>
+               </div>
+            </div>
+            <div class="nano-pane" style="opacity: 1; visibility: visible;">
+               <div class="nano-slider" style="height: 58px; transform: translate(0px, 0px);"></div>
+            </div>
+         </div>
+      </div>
+      <div class="request-form">
+         <ul id="chatPredictList" class="chat-prediction-block" style="display:none"></ul>
+         <input name="input-message" id="input-message" type="text" placeholder="Введите Ваш вопрос" maxlength="100">                        <input type="button" class="send-button" value=" ">
+      </div>
+   </div>
+</div>
+
+
+  <div class="message">
+   <div class="link">
+    hello
+   </div>
+    <ul class = "chat-response-options">
+        <li class = "userlink" onclick= "Chat_btn(event)" >Вопросы по мобильной связи</li>
+        <li class = "userlink" onclick= "Chat_btn(event)" >Для корпоративных клиентов </li>
+        <li class = "userlink" onclick= "Chat_btn(event)" >Приложение Мой Beeline </li>
+        <li class = "userlink" onclick= "Chat_btn(event)" >Купить смартфон мечты  </li>
+        <li class = "userlink" onclick= "Chat_btn(event)" >Вопросы по услуге "Интернет дома </li>
+        <li class = "userlink" onclick= "Chat_btn(event)" >Открой цифровой кошелёк Simply! </li>
+        <li class = "userlink" onclick= "Chat_btn(event)" >Бронирование очереди (только г.Алматы ул. Жибек жолы, 98) </li>
+    </ul>
+  </div>
+
+
+  <script>
+
+
+      $('#chat-open-button,#close').click(function(event){
+        $('#chat-open-button,.intro,#close').toggleClass('active');
+      });
+
+
+      $('.start-dialog,#close').click(function(event){
+        $('#chat-open-button,.chatBox, .intro').toggleClass('active');
+      });
+
+
+      var socket = 0
+      function Chat_btn(ev){
+        if (ev.currentTarget.url) {
+          window.open(ev.currentTarget.url, '_blank');
+          return;
+        }
+        data = '{"action": "buttonClick", "requestId": "' + window.sessionStorage.getItem("requestID") + '", "schemaId": "' + ev.currentTarget.getAttribute("sch-id") + '", "stepId": "' + ev.currentTarget.getAttribute("step-id") + '", "buttonId": ' + ev.currentTarget.getAttribute("btn-id") + '}'
+          console.log(JSON.parse(data))
+        socket.send(data)
+      }
+
+      function onMessage(event) {
+        var data = JSON.parse(event.data);
+        console.log(data)
+        if (data.responses) {
+          console.log(data)
+            // отобразить сообщение с кнопками, если есть, в диалоговом окне
+        // dialog not found
+        }
+        if (data.error == 'DIALOG_NOT_FOUND' || data.error == 'SESSION_EXPIRED'){
+            console.log(data)
+          console.log("ERROR")
+            // диалог не найден или срок сессии истекла. Нужно заново инициализировать диалог, вызвав GET /web/initialize
+             return;
+        }
+    }
+
+
+      function load_msg(){
+        xhttp = new XMLHttpRequest();
+        xhttp.onload = function() {
+
+        var  temp = JSON.parse(this.responseText)
+        temp2 = temp['data']['sessionID']
+        temp = temp['data']['responses'][0]
+        sessionStorage.setItem("requestID", temp['id'])
+        console.log('wss://mb.beeline.kz/chat?access_token=' + temp2)
+
+          socket = new WebSocket('wss://mb.beeline.kz/chat?access_token=' + temp2);
+          socket.addEventListener('open', function (event) {
+            console.info('Connected!');
+          });
+          socket.addEventListener("message", onMessage)
+          document.querySelector("div.link").innerHTML = temp['response']
+
+          var lis = document.querySelector(".chat-response-options").querySelectorAll("li")
+
+          for(let i = 0; i < temp['buttons'].length; i++){
+            lis[i].innerHTML = temp['buttons'][i]['name']
+            if (temp['buttons'][i]['url']) {
+              lis[i].url =
+                temp['buttons'][i]['url']
+            }
+            lis[i].setAttribute("btn-id", temp['buttons'][i]['buttonId'])
+            lis[i].setAttribute("sch-id", temp['buttons'][i]['schemaId'])
+            lis[i].setAttribute("step-id", temp['buttons'][i]['stepId'])
+
+          }
+
+        }
+        xhttp.open('GET', "/bot", true)
+        xhttp.send();
+
+      }
+      load_msg()
+      // for (let i = 0; i < elements.length; i++) {
+      // elements[i].addEventListener('click', function () {
+      // document.querySelector("#chat_btn").textContent = this.textContent;
+      // })
+      // }
+
+
+  </script>
+
+
+
+</body>
+
+</html>
